@@ -1,4 +1,4 @@
-# Chat App
+# ChatWave
 
 This is a real-time chat application built using Node.js, Express, and Socket.IO. It allows multiple users to join a chat room and communicate with each other in real-time.
 

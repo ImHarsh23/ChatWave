@@ -18,7 +18,7 @@ socket.on("userAdded", ({msg, name, client})=>{
                                 <h4>${element.name}</h4>
                                 <p class="user-status online">Online</p>
                             </div>
-                            ${element.id == socket.id ? "<div>🟣</div>" : ""}
+                            ${element.id == socket.id ? "<div>🟢</div>" : ""}
                         </div>
                     </div>`;
         div.innerHTML += user;

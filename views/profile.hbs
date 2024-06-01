@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="shortcut icon" href="https://cdn2.iconfinder.com/data/icons/japan-flat-2/340/wave_ocean_sea_water_surf_splash-512.png" type="image/x-icon">
+
 </head>
 <body>
     <span style="display: none;">{{name}}</span>
     <div class="container">
-        <a href="/logout">
+        
             <div class="logout">
-                <button class="logout-btn">Logout</button>
+                <a href="/">
+                    <button style="background: linear-gradient(to right, #6a11cb, #2575fc);" class="logout-btn">Home</button>
+                </a>
+                <a href="/logout">
+                    <button class="logout-btn">Logout</button>
+                </a>
             </div>
-        </a>
         <div class="chat-app">
             <h1 class="heading">ChatWave</h1>
             <div class="chatbox">

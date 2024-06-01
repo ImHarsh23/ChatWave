@@ -24,6 +24,10 @@ app.use(express.urlencoded({extended:true}))
 
 let userMap ={};
 
+app.get("/", (req, res)=>{
+    res.render("home");
+})
+
 app.get("/login", (req, res)=>{
     if(req.session.isLogin){
         return res.redirect("/profile");
@@ -50,7 +54,7 @@ app.get("/profile", (req, res)=>{
 app.get("/logout", (req, res)=>{
     req.session.destroy((err)=>{
         if(err) res.send(err);
-        res.redirect("/login");
+        res.redirect("/");
     })
 })
 

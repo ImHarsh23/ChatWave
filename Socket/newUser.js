@@ -17,6 +17,8 @@ module.exports = function(socket, userMap, io){socket.on("newuser", async({socke
         client.push({id:socket.id, name:userMap[socket.id], image:avatar[Math.floor(Math.random() * avatar.length)]});
     })
 
+    // console.log(socket.request.session);
+
     io.emit("userAdded", {
         msg:"User Added",
         name: userMap[socketId], 

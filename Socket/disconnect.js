@@ -17,7 +17,7 @@ module.exports = function(socket, userMap, io){
                 updatedClient.push({id:element.id, name:userMap[element.id], image: avatar[Math.floor(Math.random() * avatar.length)]});
             }
         })
-        console.log(updatedClient);
+        // console.log(updatedClient);
         socket.broadcast.emit("clientUpdate", updatedClient); 
     });
 }

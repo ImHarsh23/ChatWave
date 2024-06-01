@@ -24,18 +24,34 @@ app.use(express.urlencoded({extended:true}))
 
 let userMap ={};
 
-app.get("/", (req, res)=>{
+app.get("/login", (req, res)=>{
+    if(req.session.isLogin){
+        return res.redirect("/profile");
+    }
     res.render("login");
 })
 
-app.get("/profile", (req, res)=>{
-    const {name} = req.query;
-    req.session.isLogin = true;
+app.post("/login", (req, res)=>{
+    const {name} = req.body;
     req.session.name = name;
+    req.session.isLogin = true;
+    res.redirect("/profile");
+})
 
+app.get("/profile", (req, res)=>{
+    if(!req.session.isLogin){
+        return res.redirect("/login");
+    }
     res.render("profile", {
         name:req.session.name
     });
+})
+
+app.get("/logout", (req, res)=>{
+    req.session.destroy((err)=>{
+        if(err) res.send(err);
+        res.redirect("/login");
+    })
 })
 
 io.on("connection", (socket)=>{

@@ -25,8 +25,6 @@ app.set("view engine", "hbs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:true}))
 
-let userMap ={};
-
 app.get("/", (req, res)=>{
     res.render("home");
 })

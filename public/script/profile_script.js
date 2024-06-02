@@ -4,7 +4,8 @@ socket.on('connect', () => {
     socket.emit("newuser", {socketId: socket.id, name:Naam});
 });
 
-socket.on("userAdded", ({msg, name, client})=>{
+socket.on("userAdded", ({msg, name, client, chats, socketId})=>{
+
     document.querySelector(".users-list").innerHTML = "";
     let div = document.createElement("div");
 
@@ -26,10 +27,39 @@ socket.on("userAdded", ({msg, name, client})=>{
 
     document.querySelector(".users-list").innerHTML = div.innerHTML;
     document.querySelector(".online-count").innerHTML = "&nbsp" + client.length;
+
+
+    //Chats Loading for new user
+
+    let messageArea = document.querySelector(".messages");
+
+    if(socket.id == socketId){
+
+        let fragdiv = document.createElement("div");
+        chats.forEach((element)=>{
+            let chatContainer = document.createElement("div");
+            let chat = document.createElement("div");
+            chat.classList.add("chat");
+    
+            chatContainer.innerHTML = `<div class="chat">
+                                            <div class="chat-header">
+                                                <h4 class="user-name">${element.name}</h4>
+                                            </div>
+                                            <div class="chat-message">${element.message}</div>
+                                            <div class="time">
+                                                <h4 class="chat-time">${element.time}</h4>     
+                                            </div>
+                                        </div>`;
+            chatContainer.classList.add("left");
+            fragdiv.append(chatContainer);
+        }) 
+        messageArea.innerHTML = fragdiv.innerHTML; 
+    }
+    
 })
 
 socket.on("clientUpdate", (updatedClient)=>{
-    console.log(updatedClient);
+
     document.querySelector(".users-list").innerHTML = "";
     let div = document.createElement("div");
 
@@ -54,7 +84,6 @@ socket.on("clientUpdate", (updatedClient)=>{
 })
 
 socket.on("messagereceived", ({message, name, socketId, time})=>{
-    console.log("Time is:", time);
     document.querySelector(".send-message-value").value = "";
     let messageArea = document.querySelector(".messages");
     let chatContainer = document.createElement("div");

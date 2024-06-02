@@ -1,3 +1,5 @@
+const Users = require("../models/onlineUsers");
+
 const avatar =[
     "https://cdn1.iconfinder.com/data/icons/user-pictures/100/male3-512.png",
     "https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png",
@@ -8,20 +10,27 @@ const avatar =[
     "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/boy_person_avatar_kid-512.png"
 ];
 
-module.exports = function(socket, userMap, io){socket.on("newuser", async({socketId, name})=>{
-    userMap[socketId] = name;
 
-    const client=[];
-    let sockets = await io.fetchSockets();
-    sockets.forEach(socket =>{
-        client.push({id:socket.id, name:userMap[socket.id], image:avatar[Math.floor(Math.random() * avatar.length)]});
+module.exports = function(socket, io){socket.on("newuser", async({socketId, name})=>{
+    const newUser = await Users.create({
+        name,
+        socketId
     })
 
+    const user_list = await Users.find().skip(0).exec();
+
+    const client = user_list.map((element)=>{
+        return {id:element.socketId, name: element.name, image:avatar[Math.floor(Math.random() * avatar.length)]};
+    })
+
+    // console.log(name, client);
+
+    //await io.fetchSockets() - Although we can get list from here
     // console.log(socket.request.session);
 
     io.emit("userAdded", {
         msg:"User Added",
-        name: userMap[socketId], 
+        name: newUser.name, 
         client
     })
 }) }

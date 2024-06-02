@@ -2,7 +2,9 @@ const express = require("express");
 const { createServer } = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
-const session = require('express-session')
+const session = require('express-session');
+const mongoose = require("mongoose");
+const MongoStore = require('connect-mongo');
 
 const app = express();
 const httpServer = createServer(app);
@@ -11,8 +13,9 @@ Port = 4000;
 
 const sessionMiddleware = session({
     secret: "changeit",
-    resave: true,
+    resave: false,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: 'mongodb+srv://<ID>:<Password>@cluster0.zmi7wvh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'})
   });
 
 app.use(sessionMiddleware);
@@ -60,15 +63,20 @@ app.get("/logout", (req, res)=>{
 
 io.on("connection", (socket)=>{
 
-    require("./Socket/newUser")(socket, userMap, io);
+    require("./Socket/newUser")(socket, io);
  
-    require("./Socket/newmessage")(socket, userMap, io);
+    require("./Socket/newmessage")(socket, io);
 
-    require("./Socket/disconnect")(socket, userMap, io);
+    require("./Socket/disconnect")(socket, io);
 
     
 })
 
-httpServer.listen(Port, ()=>{
-    console.log("Server Running at Port", Port);
+mongoose.connect("mongodb+srv://<ID>:<Password>@cluster0.zmi7wvh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").
+then(()=>{
+    httpServer.listen(Port, ()=>{
+        console.log("Server Running at Port", Port);
+    })
+}).catch(()=>{
+    console.log("unable to connect");
 })

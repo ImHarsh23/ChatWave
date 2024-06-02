@@ -1,4 +1,7 @@
-module.exports = function(socket, userMap, io){
+const Users = require("../models/onlineUsers");
+
+module.exports = (socket, io)=>{
+
     function getMessageTime() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
@@ -8,7 +11,9 @@ module.exports = function(socket, userMap, io){
         return formattedTime;
     }
 
-    socket.on("newmessage", ({message, socketId})=>{
-        io.emit("messagereceived", {message, name:userMap[socketId], socketId, time:getMessageTime()});
+    socket.on("newmessage", async({message, socketId})=>{
+        const user = await Users.findOne({socketId});
+
+        io.emit("messagereceived", {message, name: user.name, socketId, time:getMessageTime()});
     })
 }

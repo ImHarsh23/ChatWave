@@ -39,8 +39,11 @@ socket.on("clientUpdate", (updatedClient)=>{
                             <img src=${element.image} alt="User Avatar">
                         </div>
                         <div class="user-info">
-                            <h4>${element.name}</h4>
-                            <p class="user-status online">Online</p>
+                            <div>
+                                <h4>${element.name}</h4>
+                                <p class="user-status online">Online</p>
+                            </div>
+                            ${element.id == socket.id ? "<div>🟢</div>" : ""}
                         </div>
                     </div>`;
         div.innerHTML += user;
